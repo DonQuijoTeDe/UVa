@@ -15,7 +15,6 @@ int main() {
     cin >> t;
     while(t--) {
         cin >> str;
-        cout << "\n";
         int slen = strlen(str), i;
         long long DP[200] = {}, tmp = 0;
         for(i = 0; i < slen; i++) {
@@ -29,12 +28,10 @@ int main() {
                         break;
                     //cout << DP[i]+tmp << " ";
                     DP[j+1] = max(DP[j+1], DP[i]+tmp);
-                    cout << DP[j+1] << " ";
                 }
             }
-            cout << "\n";
         }
-        cout << "\n" << DP[slen] << "\n";
+        cout << DP[slen] << "\n";
     }
     return 0;
 }
