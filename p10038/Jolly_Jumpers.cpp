@@ -29,17 +29,18 @@ int main() {
 					isJolly = false;
 					break;
 				}
-			} else 
+			} else
 				record[0] = true;
 		}
 
-		if (isJolly && Check(record, L)) 
+		if (isJolly && Check(record, L))
 			cout << "Jolly";
-		else 
+		else
 			cout << "Not jolly";
 		cout << "\n";
 
-		delete[] seq, record;
+		delete[] seq;
+		delete[] record;
 	}
 }
 

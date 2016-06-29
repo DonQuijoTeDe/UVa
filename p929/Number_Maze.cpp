@@ -2,14 +2,14 @@
 #include <queue>
 using namespace std;
 
-struct Node 
+struct Node
 {
 	int x, y, w;
 	Node(){};
 	Node(int a, int b, int c) : x(a), y(b), w(c){}
 	bool operator< (const Node& n) const
-	{ 
-		return w > n.w; 
+	{
+		return w > n.w;
 	}
 };
 
@@ -40,7 +40,7 @@ int main() {
 		/* --- Start --- Dijkstra */
 
 		/* Initialization */
-		for (i = 0; i < row; i++) 
+		for (i = 0; i < row; i++)
 			for (j = 0; j < column; j++) {
 				Dis[i][j] = 1e9;
 				isVisit[i][j] = false;
@@ -50,7 +50,7 @@ int main() {
 
 		Dis[0][0] = Maze[0][0];
 		PQ.push(Node(0, 0, Dis[0][0]));
-		
+
 		for (i = 0; i < row*column; i++) {
 
 			/* Find the node which has the smallest distance and is
@@ -94,7 +94,9 @@ int main() {
 			delete[] Dis[i];
 			delete[] isVisit[i];
 		}
-		delete[] Maze, Dis, isVisit;
+		delete[] Maze;
+		delete[] Dis;
+		delete[] isVisit;
 		/* --- End --- Release allocation */
 	}
 
