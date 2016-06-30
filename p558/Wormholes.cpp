@@ -1,10 +1,16 @@
 #include <iostream>
+#include <vector>
 #include <queue>
 using namespace std;
 
+struct Pair {
+	int to, w;
+	Pair(int first, int second) : to(first), w(second){}
+};
+
 int main() {
 	int c, n, m, x, y, t,
-		i, j, current;
+		i, current, next, next_w;
 	bool isCyclic;
 
 	cin >> c;
@@ -14,32 +20,28 @@ int main() {
 		isCyclic = false;
 
 		/* Dynamic allocation */
+		vector<Pair> *adjList = new vector<Pair>[n];
 		int* dis = new int[n];
 		bool* inQueue = new bool[n];
-		int* p = new int[n];
-		int** w = new int*[n];
-		for (i = 0; i < n; i++)
-			w[i] = new int[n];
+		int* r = new int[n];
 
 		/* Initialize */
 		for (i = 0; i < n; i++) {
-			dis[i] = 1e9;
+			adjList[i].clear();
+			dis[i] = (int)1e9;
 			inQueue[i] = false;
-			p[i] = 0;
-			for (j = 0; j < n; j++)
-				w[i][j] = 1e9;
+			r[i] = 0;
 		}
-
+			
 		/* Store Input */
 		for (i = 0; i < m; i++) {
 			cin >> x >> y >> t;
-			w[x][y] = t;
+			adjList[x].push_back({ y, t });
 		}
 
 		/* --- Start --- SPFA */
 		queue<int> q;
 		q.push(0);
-		//inQueue[0] = true;
 		dis[0] = 0;
 
 		while (!isCyclic && !q.empty()) {
@@ -47,17 +49,19 @@ int main() {
 			q.pop();
 			inQueue[current] = false;
 
-			for (i = 0; i < n; i++) {
-				if (w[current][i] != 1e9 && dis[current] + w[current][i] < dis[i]) {
-					dis[i] = dis[current] + w[current][i];
-					p[i] = p[current] + 1;
-					if (p[i] >= n) {
+			for (i = 0; i < (int)adjList[current].size(); i++) {
+				next = adjList[current][i].to;
+				next_w = adjList[current][i].w;
+				if (dis[current] + next_w < dis[next]) {
+					dis[next] = dis[current] + next_w;
+					r[next] = r[current] + 1;
+					if (r[next] >= n) {
 						isCyclic = true;
 						break;
 					}
-					if (!inQueue[i]) {
-						q.push(i);
-						inQueue[i] = true;
+					if (!inQueue[next]) {
+						q.push(next);
+						inQueue[next] = true;
 					}
 				}
 			}
@@ -65,17 +69,15 @@ int main() {
 		/* --- End --- SPFA */
 
 		/* Output */
-		if (isCyclic)
+		if (isCyclic) 
 			cout << "possible\n";
-		else
+		else 
 			cout << "not possible\n";
 
 		/* Release allocation */
-		for (i = 0; i < n; i++)
-			delete[] w[i];
+		delete[] adjList;
 		delete[] dis;
 		delete[] inQueue;
-		delete[] p;
-		delete[] w;
+		delete[] r;
 	}
 }

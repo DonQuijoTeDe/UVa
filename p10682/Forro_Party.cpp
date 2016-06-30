@@ -36,7 +36,7 @@ int main() {
 			cout << "\n";
 
 		map<string, int> Id; /* Map : city(A) to index(0)
-							  *       city(B) to index(1) */
+							            *       city(B) to index(1) */
 
 		/* Due to runtime error on UVa online judge,
 		   I can't allocate memories dynamically
@@ -59,15 +59,16 @@ int main() {
 				isVisited[i][j] = false;
 		}
 		*/
-		
+
 		/* Static allocation */
 		vector<Pair> adjList[500]; // At most 500 different cities
 		bool isVisited[500][500];
 		int parent[500];
 
 		string name[500]; /* Map : use index(0) to find city(A)
-						   *           index(1) to find city(B) */
+						           *           index(1) to find city(B) */
 
+    /* Initialize */
 		memset(isVisited, false, sizeof(isVisited));
 		memset(parent, -1, sizeof(parent));
 		memset(name, 0, sizeof(name));
@@ -118,14 +119,12 @@ int main() {
 			for (i = 0; i < (int)adjList[v2].size(); i++) {
 				int next_v2 = adjList[v2][i].to;
 				if (adjList[v2][i].w >= speed && !isVisited[v2][next_v2]) {
-
-					/* Be careful, we need to record two vertices.
-					 * The source has two vertices and each vertice 
-					 * points to itself */
-					parent[next_v2] = v2; 
+					/* Since the source has two vertices and each vertice
+					 * points to itself we need to record two vertices. */
+					parent[next_v2] = v2;
 					parent[v2] = v1;
 					isVisited[next_v2][v2] = isVisited[v2][next_v2] = true;
-					
+
 					Road next(v2, next_v2, adjList[v2][i].w);
 					q.push(next);
 
@@ -162,7 +161,7 @@ int main() {
 }
 
 void Trace(int p[], string n[], int src, int des) {
-	if (des == src) 
+	if (des == src)
 		cout << n[des];
 	else {
 		Trace(p, n, src, p[des]);

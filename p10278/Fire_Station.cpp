@@ -48,7 +48,7 @@ int main() {
 		/* --- End --- Floyd Warshall */
 
 		/* 1. Calculate the min distance for each SF[j]
-		 *    ( SF[j] means the shortest distance from
+		 *    ( SF[j] means the shortest distance from 
 		 *    point j to the nearest fire station )
 		 * 2. Find the max distance in SF[j] and store
 		 *    it in max_SF */
@@ -60,8 +60,8 @@ int main() {
 			max_SF = max(max_SF, SF[j]);
 		}
 
-		/* 1. Check whether the new fire station which would
-		 *    be built in each point could make the max_SF
+		/* 1. Check whether the new fire station which would 
+		 *    be built in each point could make the max_SF 
 		 *    more smaller
 		 * 2. If so, updates the max_SF and records it */
 		int temp_max, temp_SF, answer = 1;

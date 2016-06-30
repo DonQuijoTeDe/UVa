@@ -3,11 +3,16 @@
 #include <algorithm>
 using namespace std;
 
+struct Pair {
+	int to;
+	Pair(int first) : to(first) {}
+};
+
 int main() {
 	int N, S,
 		u, v,
-		i, j,
-		current, maxIndex,
+		i,
+		current, maxIndex, next,
 		Case = 0;
 
 	while (cin >> N && N) {
@@ -15,23 +20,18 @@ int main() {
 		Case++;
 
 		/* Dynamic allocation */
-		bool** edge = new bool*[N+1];
+		vector<Pair> *adjList = new vector<Pair>[N + 1];
 		int* dis = new int[N+1];
 		bool* inQueue = new bool[N+1];
 		for (i = 1; i < N + 1; i++) {
-			edge[i] = new bool[N + 1];
+			adjList[i].clear();
 			dis[i] = 0;
 			inQueue[i] = false;
 		}
 
-		for (i = 1; i < N + 1; i++)
-			for (j = 1; j < N + 1; j++)
-				edge[i][j] = false;
-
 		while (cin >> u >> v && u + v)
-			edge[u][v] = true;
-
-
+			adjList[u].push_back({ v });
+		
 		/* --- Start --- Shortest Path Faster Algorithm */
 
 		queue<int> q;
@@ -40,17 +40,18 @@ int main() {
 			current = q.front();
 			q.pop();
 			inQueue[current] = false;
-			for (i = 1; i < N + 1; i++) {
-				if (edge[current][i] && (dis[current] + 1 > dis[i])) {
-					dis[i] = dis[current] + 1;
-					if (!inQueue[i]) {
-						q.push(i);
-						inQueue[i] = true;
+			for (i = 0; i < (int)adjList[current].size(); i++) {
+				next = adjList[current][i].to;
+				if (dis[current] + 1 > dis[next]) {
+					dis[next] = dis[current] + 1;
+					if (!inQueue[next]) {
+						q.push(next);
+						inQueue[next] = true;
 					}
 				}
 			}
 		}
-
+		
 		/* --- End --- Shortest Path Faster Algorithm */
 
 		/* Find the longest paths */
@@ -60,13 +61,11 @@ int main() {
 				maxIndex = i;
 		}
 
-		cout << "Case " << Case << ": The longest path from " << S
+		cout << "Case " << Case << ": The longest path from " << S 
 			 << " has length " << dis[maxIndex] << ", finishing at " << maxIndex << ".\n\n";
 
 		/* Release allocation */
-		for (i = 1; i < N + 1; i++)
-			delete[] edge[i];
-		delete[] edge;
+		delete[] adjList;
 		delete[] dis;
 		delete[] inQueue;
 	}

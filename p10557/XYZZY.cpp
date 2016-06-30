@@ -1,52 +1,62 @@
 #include <iostream>
+#include <string.h>
 #include <queue>
 #include <vector>
 using namespace std;
 
-struct Node {
-	vector<int> list;
-	int energy, doorways;
+struct Pair {
+	int to, energy;
+	Pair(int first, int second) : to(first), energy(second){}
 };
 
 int main() {
 	int n, value, leave,
-		next, current, isFinal, isCyclic,
-		i, j, m, k;
+		next, current, isFinal, isCyclic, total,
+		i, j;
 
 	while (cin >> n && n != -1) {
 		isFinal = false;
 		isCyclic = false;
-
+		
 		/* Dynamic allocation */
-		bool** transitive = new bool*[n + 1];
-		Node* node = new Node[n + 1];
-		int* dis = new int[n + 1];
+		vector<Pair> *adjList = new vector<Pair>[n + 1];
+		int* energy = new int[n + 1];
 		int* r = new int[n + 1];
 		bool* inQueue = new bool[n + 1];
-		for (i = 1; i <= n; i++)
-			transitive[i] = new bool[n + 1];
+
+		/* I'm still working here to carry out
+		 * if there is a method that I don't have
+		 * to declare this trasition table to make
+		 * my code more efficient. Although I can
+		 * allocate memories dynamically, I still
+		 * need to initialize it in O(n^2) time. So
+		 * I use memset to request a block of memory
+		 * as quickly as possible */
+		bool transitive[101][101];
+		memset(transitive, false, sizeof(transitive));
 
 		/* Initialize */
 		for (i = 1; i <= n; i++) {
-			dis[i] = -1e9;
+			energy[i] = (int)-1e9;
 			r[i] = 0;
 			inQueue[i] = false;
-			for (j = 1; j <= n; j++)
-				transitive[i][j] = false;
+			adjList[i].clear();
 		}
-
+			
 		/* Store Input */
 		for (i = 1; i <= n; i++) {
 			cin >> value >> leave;
-			node[i].energy = value;
-			node[i].doorways = leave;
-			for (j = 0; j < node[i].doorways; j++) {
+			if (leave)
+				for (j = 0; j < leave; j++) {
 					cin >> next;
-					node[i].list.push_back(next);
-			}
+					adjList[i].push_back({ next, value });
+				}
+			/*else
+				adjList[i].push_back({ -1, value});*/
 		}
 
-		/* --- Start --- BFS : To check if it is transitive */
+		/* --- Start --- BFS : To check if it is transitive
+		 * That is, if 1 -> 2 and 2 -> 3 then 1 -> 3 */
 		queue<int> Q;
 		for (i = 1; i <= n; i++) {
 			Q.push(i);
@@ -59,8 +69,8 @@ int main() {
 				else
 					transitive[i][next] = true;
 
-				for (j = 0; j < node[next].doorways; j++)
-					Q.push(node[next].list[j]);
+				for (j = 0; j < (int)adjList[next].size(); j++)
+					Q.push(adjList[next][j].to);
 			}
 		}
 		/* --- End --- BFS */
@@ -68,7 +78,7 @@ int main() {
 		/* --- Start --- SPFA */
 		queue<int> q;
 		q.push(1);
-		dis[1] = 100;
+		energy[1] = 100;
 
 		while (!q.empty()) {
 			current = q.front();
@@ -89,20 +99,20 @@ int main() {
 
 				/* case 2-B : Can't reach the end */
 				} else
-					dis[current] = 1e9;
+					energy[current] = (int)1e9;
 				continue;
 			}
 
 			/* Update the energy after arriving next room */
-			for (i = 0; i < node[current].doorways; i++) {
-				m = node[current].list[i];
-				k = dis[current] + node[current].energy;
-				if (k > 0 && k > dis[m]) {
-					dis[m] = k;
-					r[m] = r[current] + 1;
-					if (!inQueue[m]) {
-						q.push(m);
-						inQueue[m] = true;
+			for (i = 0; i < (int)adjList[current].size(); i++) {
+				next = adjList[current][i].to;
+				total = energy[current] + adjList[current][i].energy;
+				if (total > 0 && total > energy[next]) {
+					energy[next] = total;
+					r[next] = r[current] + 1;
+					if (!inQueue[next]) {
+						q.push(next);
+						inQueue[next] = true;
 					}
 				}
 			}
@@ -112,20 +122,16 @@ int main() {
 		/* Output */
 		if (isFinal || isCyclic)
 			cout << "winnable\n";
-		else if (dis[n] > 0)
+		else if (energy[n] > 0)
 			cout << "winnable\n";
 		else
 			cout << "hopeless\n";
 
 		/* Release allocation */
-		for (i = 1; i <= n; i++)
-			delete[] transitive[i];
-		delete[] node;
-		delete[] transitive;
-		delete[] dis;
-		delete[] r;
+		delete[] adjList;
 		delete[] inQueue;
-
+		delete[] r;
+		delete[] energy;
 	}
 
 	return 0;
