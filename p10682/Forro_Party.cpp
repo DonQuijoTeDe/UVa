@@ -35,8 +35,7 @@ int main() {
 		else
 			cout << "\n";
 
-		map<string, int> Id; /* Map : city(A) to index(0)
-							            *       city(B) to index(1) */
+		map<string, int> Id; /* Map : city(A) to index(0), city(B) to index(1) */
 
 		/* Due to runtime error on UVa online judge,
 		   I can't allocate memories dynamically
@@ -65,10 +64,9 @@ int main() {
 		bool isVisited[500][500];
 		int parent[500];
 
-		string name[500]; /* Map : use index(0) to find city(A)
-						           *           index(1) to find city(B) */
+		string name[500]; /* Map : use index(0) to find city(A), index(1) to find city(B) */
 
-    /* Initialize */
+		/* Initialize */
 		memset(isVisited, false, sizeof(isVisited));
 		memset(parent, -1, sizeof(parent));
 		memset(name, 0, sizeof(name));

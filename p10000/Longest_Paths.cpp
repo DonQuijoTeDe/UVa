@@ -31,7 +31,7 @@ int main() {
 
 		while (cin >> u >> v && u + v)
 			adjList[u].push_back({ v });
-		
+
 		/* --- Start --- Shortest Path Faster Algorithm */
 
 		queue<int> q;
@@ -51,7 +51,7 @@ int main() {
 				}
 			}
 		}
-		
+
 		/* --- End --- Shortest Path Faster Algorithm */
 
 		/* Find the longest paths */
@@ -61,7 +61,7 @@ int main() {
 				maxIndex = i;
 		}
 
-		cout << "Case " << Case << ": The longest path from " << S 
+		cout << "Case " << Case << ": The longest path from " << S
 			 << " has length " << dis[maxIndex] << ", finishing at " << maxIndex << ".\n\n";
 
 		/* Release allocation */
