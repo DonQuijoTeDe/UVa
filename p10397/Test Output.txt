@@ -1,0 +1,4 @@
+343008.33
+
+Referenced:
+https://github.com/andmej/competitive_programming/tree/master/UVa/10397%20-%20Connect%20the%20campus
