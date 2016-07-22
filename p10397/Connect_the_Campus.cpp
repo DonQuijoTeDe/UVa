@@ -29,10 +29,10 @@ int main(){
 	   Run time: 0.06s
 
 	   Critical Case
-	   Input:        Output:           
-	   4             14.05 
+	   Input:        Output:
+	   4             14.05
 	   -10 0
-       10 0
+     10 0
 	   0 3
 	   0 - 1
 	   1
@@ -42,8 +42,8 @@ int main(){
 		i, j, k;
 
 	vector<Point> points;
-	roads.reserve(375 * 749); // At most (750,2) edges, where 750 is the number of 
-	                          // points to choose from, and we choose 2 of them 
+	roads.reserve(375 * 749); // At most (750,2) edges, where 750 is the number of
+	                          // points to choose from, and we choose 2 of them
 
 	while (cin >> N){
 
@@ -72,7 +72,7 @@ int main(){
 
 		cin >> M;
 		for (i = 0; i < M; i++){
-			cin >> u >> v; 
+			cin >> u >> v;
 			if (u > v){
 				swap(u, v);
 			}
