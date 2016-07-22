@@ -25,18 +25,20 @@ vector<Road> roads;
 vector<int> boss;
 
 int main(){
-	/* Min Spanning Tree Problem
-	   Run time: 0.06s
+/*
+Min Spanning Tree Problem
+Run time: 0.06s
 
-	   Critical Case
-	   Input:        Output:
-	   4             14.05
-	   -10 0
-     10 0
-	   0 3
-	   0 - 1
-	   1
-	   1 2                    */
+Critical Case
+Input:        Output:
+4             14.05
+-10 0
+10 0
+0 3
+0 - 1
+1
+1 2
+*/
 
 	int N, M, u, v,
 		i, j, k;
