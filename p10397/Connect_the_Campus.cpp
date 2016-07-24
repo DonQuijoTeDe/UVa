@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cmath>
 #include <iomanip>
+#include <chrono>
 using namespace std;
 
 struct Point{
@@ -28,24 +29,22 @@ int main(){
 /*
 Min Spanning Tree Problem
 Run time: 0.06s
-
 Critical Case
 Input:        Output:
 4             14.05
 -10 0
 10 0
 0 3
-0 - 1
+0 -1
 1
 1 2
 */
-
 	int N, M, u, v,
 		i, j, k;
 
 	vector<Point> points;
 	roads.reserve(375 * 749); // At most (750,2) edges, where 750 is the number of
-	                          // points to choose from, and we choose 2 of them
+	// points to choose from, and we choose 2 of them
 
 	while (cin >> N){
 
@@ -78,10 +77,13 @@ Input:        Output:
 			if (u > v){
 				swap(u, v);
 			}
-		    boss[Find(u - 1)] = Find(v - 1); // Key point: Union the existed edges first
+			Union(u - 1, v - 1); // Key point: Union the existed edges first
 		}
 
+		//chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
 		sort(roads.begin(), roads.end(), Cmp);
+		//chrono::steady_clock::time_point t2 = std::chrono::steady_clock::now();
+		//cout << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
 
 		double answer = Kruskal(roads.size(), N);
 
