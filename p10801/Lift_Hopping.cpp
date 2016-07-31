@@ -17,19 +17,18 @@ int main() {
 
 	while (cin >> n >> des && (n + des)) {
 
-		/* Initialize */
+		// Initialize
 		memset(T, 0, sizeof(T));
+		memset(inQueue, false, sizeof(inQueue));
+		memset(temp, 0, sizeof(temp));
 		for (i = 0; i < 100; i++) {
 			Time[i] = (int)1e9;
-			inQueue[i] = false;
-			temp[i] = 0;
-			for (j = 0; j < 100; j++)
-				W[i][j] = (int)1e9;
+			fill(W[i], W[i] + 100, 1e9);
 		}
 
-		/* 1. Store Input
-		 * 2. Calculate the minimum time from floor k1 to k2 
-		 *    in the same elevator first */
+		// 1. Store Input
+		// 2. Calculate the minimum time from floor k1 to k2
+		//    in the same elevator first
 		for (i = 1; i <= n; i++)
 			cin >> T[i];
 
@@ -46,14 +45,14 @@ int main() {
 			for (k1 = 0; k1 < j - 1; k1++) {
 				for (k2 = k1 + 1; k2 < j; k2++)
 					if (T[i] * (temp[k2] - temp[k1]) < W[temp[k1]][temp[k2]]) {
-						/*cout << "(" << temp[k1] << " " << temp[k2] << "):" 
-							 << T[i] * (temp[k2] - temp[k1]) << " ";*/
+						//cout << "(" << temp[k1] << " " << temp[k2] << "):"
+						//<< T[i] * (temp[k2] - temp[k1]) << " ";
 						W[temp[k1]][temp[k2]] = W[temp[k2]][temp[k1]] = T[i] * (temp[k2] - temp[k1]);
 					}
 			}
 		}
 
-		/* --- Start --- SPFA */
+		// --- Start --- SPFA
 		queue<int> q;
 		q.push(0);
 		//inQueue[0] = true;
@@ -66,6 +65,9 @@ int main() {
 
 			for (next = 0; next < 100; next++) {
 				if (Time[current] + W[current][next] + 60 < Time[next]) {
+					//cout << "Time[" << current << "] = " << Time[current]
+				    //<< " W[" << current << "][" << next << "] + 60 = " << W[current][next] + 60
+					//<< " Time[" << next << "] = " << Time[next] << "\n";
 					Time[next] = Time[current] + W[current][next] + 60;
 					if (!inQueue[next]) {
 						q.push(next);
@@ -74,9 +76,9 @@ int main() {
 				}
 			}
 		}
-		/* --- End --- SPFA */
+		// --- End --- SPFA
 
-		/* Output */
+		// Output
 		if (des == 0)
 			cout << 0;
 		else if (Time[des] != 1e9)
@@ -89,4 +91,3 @@ int main() {
 
 	return 0;
 }
-

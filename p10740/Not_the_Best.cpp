@@ -55,13 +55,13 @@ int main() {
 			Node current = PQ.top();
 			PQ.pop();
 			if (Visited[current.pos] > k - 1) continue;
-			
+
 			/*cout << "Dis[" << Visited[current.pos] << "][" << current.pos << "] = "
 				<< current.dis << "\n";*/
 
 			Dis[Visited[current.pos]][current.pos] = current.dis;
 			Visited[current.pos]++;
-			
+
 			for (i = 0; i < (int)adjList[current.pos].size(); i++) {
 				Node next;
 				next.pos = adjList[current.pos][i].to;
@@ -69,7 +69,7 @@ int main() {
 
 				/* if (current.dis + adjList[current.pos][i].w < next.dis)
 				 * 1. Do not check the above statement in relaxation
-				 * 2. Since we do not know the node is in which stages.
+				 * 2. Because we do not know the node is in which stages.
 				 * 3. That is, we may override Dis[2][2] by Dis[2][2]
 				 *    with the same distance.
 				 * 4. Also, this is the reason why I choose Dijkstra
@@ -92,7 +92,7 @@ int main() {
 		delete[] adjList;
 		delete[] Dis;
 		delete[] Visited;
-		
+
 	}
 
 	return 0;
